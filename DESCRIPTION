@@ -1,0 +1,11 @@
+Package: MDShelper
+Title: MDS Helper Functions
+Version: 0.0.0.9000
+Authors@R: 
+    person(given = "David", family = "Izydorczyk", , "izydorczyk@uni-mannheim.de", role = c("aut", "cre"),
+           comment = c(ORCID = "0000-0002-8792-0795"))
+Description: This package contains a bundle of convenience and helper functions for conducting multi-dimensional scaling analysis.
+License: GPL (>= 3)
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.2.2
