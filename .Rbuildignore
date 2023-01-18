@@ -1,2 +1,4 @@
 ^MDShelper\.Rproj$
 ^\.Rproj\.user$
+^data-raw$
+^package_making_pipeline\.R$
