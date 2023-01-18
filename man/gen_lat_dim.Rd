@@ -11,7 +11,7 @@ gen_lat_dim(ndims = 2, n = 16, min = -1, max = 1)
 
 \item{n}{number of stimuli}
 
-\item{min}{minimum value the coordinates can have (defualt 1)}
+\item{min}{minimum value the coordinates can have (defualt -1)}
 
 \item{max}{maximum value the coordinates can have (default 1)}
 }

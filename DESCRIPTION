@@ -13,9 +13,10 @@ URL: https://github.com/dizyd/MDShelper
 BugReports: https://github.com/dizyd/MDShelper/issues
 LinkingTo: Rcpp
 Imports: 
-    dplyr,
     magrittr,
     smacof,
-    Rcpp
+    Rcpp,
+    purrr,
+    rlang
 Depends: 
     R (>= 4.2)

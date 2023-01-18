@@ -6,7 +6,6 @@
 #' @param n     number of itmes/rows (default = 16)
 #' @param min   minimum possible cue value for the uniform distribution (default = -1)
 #' @param max   maximum possible cue value for the uniform distribution (default = 1)
-#' @param mat   matrix with coordinates of stimuli (i.e., the position in multidimensional space), with dimensions in the columns and stimuli in the rows
 #' @param r     r parameter of minkowski space (default = 2)
 #' @param diag  return diagonal matrix values (defualt = FALSE)
 #' @param upper return upper matrix half (default = FALSE)

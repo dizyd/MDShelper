@@ -10,7 +10,7 @@ This package contains a bundle of convenience and helper functions for conductin
 \section{Functions}{
 
 \itemize{
-\item \code{\link{print_bf}}:  print Bayes Factors in Markdown files
+\item \code{\link{gen_lat_dim}}:
 }
 }
 
