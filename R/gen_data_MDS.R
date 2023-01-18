@@ -1,6 +1,6 @@
 #' Generate MDS data (i.e., true underlying dimensions and true pairwise distances)
 #'
-#' \code{gen_data_mds} generates a matrix with thetrue underlying dimensions and the corresponding true pairwise distances
+#' \code{gen_data_MDS} generates a matrix with thetrue underlying dimensions and the corresponding true pairwise distances
 #'
 #' @param ndims number of latent dimensions/cues (default = 2)
 #' @param n     number of itmes/rows (default = 16)
@@ -16,12 +16,12 @@
 #' @return matrix of pairwise-distances between objects (if return_latent = FALSE) or a list with the matrix of pairwise distances (`dist_mat`) and the underlying MDS space (`latent`)
 #' @examples
 #'
-#' gen_data_mds()
+#' gen_data_MDS()
 #'
 #' @importFrom Rcpp sourceCpp
 #'
 #' @export
-gen_data_mds <- function(ndims=2, n=16, min=-1, max= 1, r=2, diag=F, upper=F, return_latent=T){
+gen_data_MDS <- function(ndims=2, n=16, min=-1, max= 1, r=2, diag=F, upper=F, return_latent=T){
 
   # Create matrix with cue values for ndims cues
   latent_dims <- gen_lat_dim(ndims, n, min, max)

@@ -5,6 +5,9 @@
 #' @param d_list  list of pair-wise distance matrices (upper + diag should be NA)
 #' @param max_dim maximum number of dimensions to test (default = 5)
 #'
+#' @importFrom stats na.omit
+#' @importFrom stats sd
+#' @importFrom smacof mds
 #'
 #' @author David Izydorczyk
 #'
@@ -91,7 +94,7 @@ compute_BIC_MDS <- function(d_list,max_dim=5){
     rss    <-temp$rss
 
     # calculate BIC
-    BIC    <- BIC_mds(s,rss,i,n_items)
+    BIC    <- BIC_MDS(s,rss,i,n_items)
 
     # safe
     res[i,c("dim","stress","BIC","rss","P")] <- c(i,stress,BIC,rss,i*n_items)
