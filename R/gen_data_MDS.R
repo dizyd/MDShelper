@@ -1,6 +1,6 @@
 #' Generate MDS data (i.e., true underlying dimensions and true pairwise distances)
 #'
-#' \code{gen_data_MDS} generates a matrix with thetrue underlying dimensions and the corresponding true pairwise distances
+#' \code{gen_data_MDS} generates a matrix with the true underlying dimensions and the corresponding true pairwise distances
 #'
 #' @param ndims number of latent dimensions/cues (default = 2)
 #' @param n     number of itmes/rows (default = 16)

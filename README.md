@@ -4,7 +4,20 @@
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of MDShelper is to ...
+The goal of `MDShelper` is to provide some convenience functions when conducting multidimensional-scaling (MDS) analysis. So far the package contains the following functions (use `?function_name` for more information):
+
+- `cross_validation_MDS()`:  Runs a cross-validation procedure to find the best fitting number of dimensions of the MDS space.
+
+- `BIC_MDS()`: Computes the BIC for a specific number of dimensions of the MDS space according to Lee (2001)
+
+
+- `gen_data_MDS()`: Simulates data by generating a matrix with the true underlying dimensions and item coordinates, as well as the corresponding true pairwise distances
+
+- `fill_mat()`: Transforms a distance matrix with only lower triangle entries (rest `NA`) to full matrix with 0 on the diagonals
+
+- `compute_dists()`: Wrapper around a `Rcpp`-function (`pair_dist_cpp`)  to compute pairwise distances between two vectors.
+
+
 
 ## Installation
 
@@ -15,9 +28,6 @@ You can install the development version of MDShelper from [GitHub](https://githu
 devtools::install_github("dizyd/MDShelper")
 ```
 
-## Functions 
-
-So far the package contains the following functions (use `?function_name` for more information):
 
 ## Example
 
