@@ -7,8 +7,10 @@
 #' @param max_dim maximum number of dimensions to test (default = 2)
 #' @param NA_prob probability of turning an entry of `mat` to `NA` (default = 0.2)
 #' @param verbose prints progress (default = FALSE)
+#' @param metric  CV-metric to use. Either r (correlation) or RMSE (root-mean-squared-error)
 #'
 #' @importFrom stats  dist
+#' @importFrom stats  cor
 #' @importFrom smacof mds
 #' @importFrom purrr  map2_dbl
 #' @importFrom purrr  map2
@@ -28,7 +30,7 @@
 #'
 #'
 #' @export
-cross_validation_MDS <- function(mat,reps=100,max_dim=2,NA_prob=0.2, verbose = FALSE){
+cross_validation_MDS <- function(mat,reps=100,max_dim=2,NA_prob=0.2, verbose = FALSE, metric = "r"){
 
   dims_to_test <- 1:max_dim                  # define vector with dimensions to test
   res          <- vector("numeric",max_dim)  # create empty results vector
@@ -119,8 +121,16 @@ cross_validation_MDS <- function(mat,reps=100,max_dim=2,NA_prob=0.2, verbose = F
 
     })
 
+    if(metric == "RMSE"){
 
-    res[dim]      <- mean(map2_dbl(PRED_vals, TRUE_vals, RMSE))
+      res[dim]      <- map2_dbl(PRED_vals, TRUE_vals, RMSE) %>% mean()
+
+    } else if(metric == "r"){
+
+      res[dim]      <- map2_dbl(PRED_vals, TRUE_vals, cor) %>% mean()
+
+    }
+
 
     if(verbose){
       print(paste0("Dim.: ", dim, "/", max_dim))

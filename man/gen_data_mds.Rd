@@ -36,7 +36,7 @@ gen_data_MDS(
 matrix of pairwise-distances between objects (if return_latent = FALSE) or a list with the matrix of pairwise distances (\code{dist_mat}) and the underlying MDS space (\code{latent})
 }
 \description{
-\code{gen_data_MDS} generates a matrix with thetrue underlying dimensions and the corresponding true pairwise distances
+\code{gen_data_MDS} generates a matrix with the true underlying dimensions and the corresponding true pairwise distances
 }
 \examples{
 

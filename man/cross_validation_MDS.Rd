@@ -9,7 +9,8 @@ cross_validation_MDS(
   reps = 100,
   max_dim = 2,
   NA_prob = 0.2,
-  verbose = FALSE
+  verbose = FALSE,
+  metric = "r"
 )
 }
 \arguments{
@@ -22,6 +23,8 @@ cross_validation_MDS(
 \item{NA_prob}{probability of turning an entry of \code{mat} to \code{NA} (default = 0.2)}
 
 \item{verbose}{prints progress (default = FALSE)}
+
+\item{metric}{CV-metric to use. Either r (correlation) or RMSE (root-mean-squared-error)}
 }
 \value{
 Matrix with number of dimensions \code{dim} and average RMSE \code{m_RMSE} over all \code{reps}.
