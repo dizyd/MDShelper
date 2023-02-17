@@ -33,7 +33,8 @@
 cross_validation_MDS <- function(mat,reps=100,max_dim=2,NA_prob=0.2, verbose = FALSE, metric = "r"){
 
   dims_to_test <- 1:max_dim                  # define vector with dimensions to test
-  res          <- vector("numeric",max_dim)  # create empty results vector
+  res_m        <- vector("numeric",max_dim)  # create empty results vector
+  res_sd       <- vector("numeric",max_dim)  # create empty results vector
   dims         <- dim(mat)                   # get dimensions of input matrix
   n_pairs      <- dims[1]*(dims[1]-1)/2      # get number of pairs
 
@@ -123,11 +124,17 @@ cross_validation_MDS <- function(mat,reps=100,max_dim=2,NA_prob=0.2, verbose = F
 
     if(metric == "RMSE"){
 
-      res[dim]      <- map2_dbl(PRED_vals, TRUE_vals, RMSE) %>% mean()
+      temp <- map2_dbl(PRED_vals, TRUE_vals, RMSE)
+
+      res_m[dim]      <- mean(temp)
+      res_sd[dim]     <- sd(temp)
 
     } else if(metric == "r"){
 
-      res[dim]      <- map2_dbl(PRED_vals, TRUE_vals, cor) %>% mean()
+      temp <- map2_dbl(PRED_vals, TRUE_vals, cor)
+
+      res_m[dim]      <- mean(temp)
+      res_sd[dim]     <- sd(temp)
 
     }
 
@@ -139,6 +146,7 @@ cross_validation_MDS <- function(mat,reps=100,max_dim=2,NA_prob=0.2, verbose = F
   }
 
 
-
-  return(cbind("dim"=dims_to_test,"m_RMSE"=res))
+  return(cbind("dim" = dims_to_test,
+               "m"   = res_m,
+               "sd"  = res_sd ))
 }
