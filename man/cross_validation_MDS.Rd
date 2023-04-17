@@ -10,7 +10,9 @@ cross_validation_MDS(
   max_dim = 2,
   NA_prob = 0.2,
   verbose = FALSE,
-  metric = "r"
+  metric = "r",
+  parallel = TRUE,
+  n_cores = 4
 )
 }
 \arguments{
@@ -25,6 +27,10 @@ cross_validation_MDS(
 \item{verbose}{prints progress (default = FALSE)}
 
 \item{metric}{CV-metric to use. Either r (correlation) or RMSE (root-mean-squared-error)}
+
+\item{parallel}{run the main computation in parallel}
+
+\item{n_cores}{if parallel == TRUE, how many cores should be used when registering the cluster}
 }
 \value{
 Matrix with number of dimensions \code{dim} and average RMSE \code{m_RMSE} over all \code{reps}.

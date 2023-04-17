@@ -1,6 +1,6 @@
 Package: MDShelper
 Title: MDS Helper Functions
-Version: 0.0-1
+Version: 0.0-2
 Authors@R: 
     person(given = "David", family = "Izydorczyk", , "izydorczyk@uni-mannheim.de", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0002-8792-0795"))
@@ -17,6 +17,7 @@ Imports:
     smacof,
     Rcpp,
     purrr,
-    rlang
+    rlang,
+    doParallel
 Depends: 
     R (>= 4.2)

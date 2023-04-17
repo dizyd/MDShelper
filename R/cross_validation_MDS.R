@@ -8,6 +8,8 @@
 #' @param NA_prob probability of turning an entry of `mat` to `NA` (default = 0.2)
 #' @param verbose prints progress (default = FALSE)
 #' @param metric  CV-metric to use. Either r (correlation) or RMSE (root-mean-squared-error)
+#' @param parallel run the main computation in parallel
+#' @param n_cores  if parallel == TRUE, how many cores should be used when registering the cluster
 #'
 #' @importFrom stats  dist
 #' @importFrom stats  cor
@@ -16,6 +18,9 @@
 #' @importFrom purrr  map2
 #' @importFrom magrittr %>%
 #' @importFrom rlang .data
+#' @importFrom parallel makeCluster
+#' @importFrom parallel stopCluster
+#' @importFrom doParallel registerDoParallel
 #'
 #' @author David Izydorczyk
 #'
@@ -30,11 +35,13 @@
 #'
 #'
 #' @export
-cross_validation_MDS <- function(mat,reps=100,max_dim=2,NA_prob=0.2, verbose = FALSE, metric = "r"){
+cross_validation_MDS <- function(mat, reps=100, max_dim=2, NA_prob=0.2, verbose = FALSE,
+                                 metric = "r", parallel = TRUE, n_cores = 4){
 
   dims_to_test <- 1:max_dim                  # define vector with dimensions to test
   res_m        <- vector("numeric",max_dim)  # create empty results vector
   res_sd       <- vector("numeric",max_dim)  # create empty results vector
+  res_avg_rsq  <- vector("numeric",max_dim)  # create empty results vector
   dims         <- dim(mat)                   # get dimensions of input matrix
   n_pairs      <- dims[1]*(dims[1]-1)/2      # get number of pairs
 
@@ -94,6 +101,13 @@ cross_validation_MDS <- function(mat,reps=100,max_dim=2,NA_prob=0.2, verbose = F
   })
 
 
+  # if parallel == TRUE register a parallel backend with n_cores
+  if(parallel){
+    cl <- makeCluster(n_cores)
+    registerDoParallel(cl)
+  }
+
+
   for(dim in dims_to_test){
 
     MDS_solutions <- lapply(NA_mats,function(x,...){
@@ -105,7 +119,7 @@ cross_validation_MDS <- function(mat,reps=100,max_dim=2,NA_prob=0.2, verbose = F
         as.matrix()
 
 
-    },dim)
+    },dim,.parallel = parallel)
 
 
     PRED_vals     <- map2(NA_positions, MDS_solutions, function(pos,mat){
@@ -124,17 +138,21 @@ cross_validation_MDS <- function(mat,reps=100,max_dim=2,NA_prob=0.2, verbose = F
 
     if(metric == "RMSE"){
 
-      temp <- map2_dbl(PRED_vals, TRUE_vals, RMSE)
+      temp_RMSE <- map2_dbl(PRED_vals, TRUE_vals, RMSE)
+      temp_rsq  <- map2_dbl(PRED_vals, TRUE_vals, cor)
 
-      res_m[dim]      <- mean(temp)
-      res_sd[dim]     <- sd(temp)
+      res_m[dim]        <- mean(temp_RMSE)
+      res_sd[dim]       <- sd(temp_RMSE)
+      res_avg_rsq[dim]  <- mean(temp_rsq^2)
 
     } else if(metric == "r"){
 
-      temp <- map2_dbl(PRED_vals, TRUE_vals, cor)
+      temp_r   <- map2_dbl(PRED_vals, TRUE_vals, cor)
+      temp_rsq <- temp_r^2
 
-      res_m[dim]      <- mean(temp)
-      res_sd[dim]     <- sd(temp)
+      res_m[dim]        <- mean(temp_r)
+      res_sd[dim]       <- sd(temp_r)
+      res_avg_rsq[dim]  <- mean(temp_rsq)
 
     }
 
@@ -145,8 +163,13 @@ cross_validation_MDS <- function(mat,reps=100,max_dim=2,NA_prob=0.2, verbose = F
 
   }
 
+  # stop cluste gain
+  if(parallel){
+    stopCluster(cl)
+  }
 
-  return(cbind("dim" = dims_to_test,
-               "m"   = res_m,
-               "sd"  = res_sd ))
+  return(cbind("dim"       = dims_to_test,
+               "M"         = res_m,
+               "SD"        = res_sd,
+               "Avg. R_sq" = res_avg_rsq))
 }
