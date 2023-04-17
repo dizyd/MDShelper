@@ -110,6 +110,8 @@ cross_validation_MDS <- function(mat, reps=100, max_dim=2, NA_prob=0.2, verbose 
 
   for(dim in dims_to_test){
 
+
+    # Calculate MDS solution
     MDS_solutions <- lapply(NA_mats,function(x,...){
 
 
@@ -122,6 +124,7 @@ cross_validation_MDS <- function(mat, reps=100, max_dim=2, NA_prob=0.2, verbose 
     },dim,.parallel = parallel)
 
 
+    # Extract predictions for missing distances based on MDS solution
     PRED_vals     <- map2(NA_positions, MDS_solutions, function(pos,mat){
 
       temp <- vector("numeric",n_nas)
@@ -136,23 +139,41 @@ cross_validation_MDS <- function(mat, reps=100, max_dim=2, NA_prob=0.2, verbose 
 
     })
 
+
+
+    # Calculate R squared vs. true and MDS implied distances
+    true_dists_vec    <- mat %>% as.vector() %>% na.omit()
+
+    temp_rsq          <- sapply(MDS_solutions,function(x){
+
+      # Make x to lower triangular matrix with NAs in diag
+      x[upper.tri(x,TRUE)] <- NA
+      x_vec <- x %>% as.vector() %>% na.omit()
+
+
+      cor(x_vec,true_dists_vec)^2
+
+    })
+
+    res_avg_rsq[dim]  <- mean(temp_rsq)
+
+
+
+    # Calculate CV Metric
     if(metric == "RMSE"){
 
       temp_RMSE <- map2_dbl(PRED_vals, TRUE_vals, RMSE)
-      temp_rsq  <- map2_dbl(PRED_vals, TRUE_vals, cor)
 
       res_m[dim]        <- mean(temp_RMSE)
       res_sd[dim]       <- sd(temp_RMSE)
-      res_avg_rsq[dim]  <- mean(temp_rsq^2)
+
 
     } else if(metric == "r"){
 
       temp_r   <- map2_dbl(PRED_vals, TRUE_vals, cor)
-      temp_rsq <- temp_r^2
 
       res_m[dim]        <- mean(temp_r)
       res_sd[dim]       <- sd(temp_r)
-      res_avg_rsq[dim]  <- mean(temp_rsq)
 
     }
 
@@ -168,6 +189,7 @@ cross_validation_MDS <- function(mat, reps=100, max_dim=2, NA_prob=0.2, verbose 
     stopCluster(cl)
   }
 
+  # Combine indices and return results
   return(cbind("dim"       = dims_to_test,
                "M"         = res_m,
                "SD"        = res_sd,
