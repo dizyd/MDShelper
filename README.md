@@ -6,10 +6,11 @@
 
 The goal of `MDShelper` is to provide some convenience functions when conducting multidimensional-scaling (MDS) analysis. So far the package contains the following functions (use `?function_name` for more information):
 
-- `cross_validation_MDS()`:  Runs a cross-validation procedure to find the best fitting number of dimensions of the MDS space.
+- `cross_validation_MDS()`:  Runs a cross-validation procedure by randomly removing X% of data entries to find the best fitting number of dimensions of the MDS space. (Better use `loo_cv_MDS()`)
+
+- `loo_CV_MDS()`:  Runs a leave-one-out cross-validation procedure to find the best fitting number of dimensions of the MDS space.
 
 - `BIC_MDS()`: Computes the BIC for a specific number of dimensions of the MDS space according to Lee (2001)
-
 
 - `gen_data_MDS()`: Simulates data by generating a matrix with the true underlying dimensions and item coordinates, as well as the corresponding true pairwise distances
 
@@ -37,10 +38,10 @@ This is a basic example which shows you how generate pairwise distance data base
 library(MDShelper)
 
 ## Generate pairwise distance matrix
-sim_data <- gen_data_MDS(ndims = 4, n = 16)
+sim_data <- gen_data_MDS(ndims = 2, n = 16)
 
 ## Run Cross-Validation
-cross_validation_MDS(sim_data$dist_mat, max_dim = 5)
+loo_CV_MDS(sim_data$dist_mat, max_dim = 5)
 
 
 ```
