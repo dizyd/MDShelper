@@ -18,6 +18,7 @@ usethis::use_data_raw()
 usethis::use_package("dplyr")
 usethis::use_package("magrittr")
 usethis::use_package("smacof")
+usethis::use_package("progress")
 
 
 
