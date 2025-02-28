@@ -26,12 +26,17 @@ a symmetric  \emph{matrix} of averaged normalized distances
 
 \dontrun{
 
-compute_BIC_MDS(d,min_dim = 1, max_dim = 5, s = 0.1)
+compute_BIC_MDS.matrix(d,min_dim = 1, max_dim = 5, s = 0.1)
 
 }
 
-
+}
+\seealso{
+Other compute_BIC_MDS: 
+\code{\link{compute_BIC_MDS}()},
+\code{\link{compute_BIC_MDS.list}()}
 }
 \author{
 David Izydorczyk
 }
+\concept{compute_BIC_MDS}

@@ -15,15 +15,17 @@
 #' @author David Izydorczyk
 #'
 #' @return data.frame with the number of dimensions `dim`, the stress `Stress`, the BIC for a specific number of dimensions `BIC`, the residual sum-of-squares `RSS` of the used solution, the variance of the distance values accounted for by the solution `VAF`,  the number of parameters `P` according to Lee (2001), and the used precision estiamte `s`
+#'
+#' @family compute_BIC_MDS
 #' @examples
 #'
 #' \dontrun{
 #'
-#' compute_BIC_MDS(d,min_dim = 1, max_dim = 5, s = 0.1)
+#' compute_BIC_MDS.matrix(d,min_dim = 1, max_dim = 5, s = 0.1)
 #'
 #' }
 #'
-#'
+#' @method compute_BIC_MDS matrix
 #' @export
 compute_BIC_MDS.matrix <- function(x, min_dim = 1, max_dim = 5, s = 0.1){
 

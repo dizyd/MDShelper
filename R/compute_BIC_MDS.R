@@ -16,6 +16,8 @@
 #' @author David Izydorczyk
 #'
 #' @return data.frame with the number of dimensions `dim`, the stress `Stress`, the BIC for a specific number of dimensions `BIC`, the residual sum-of-squares `RSS` of the used solution, the variance of the distance values accounted for by the solution `VAF`,  the number of parameters `P` according to Lee (2001), and the used precision estiamte `s`
+#'
+#' @family compute_BIC_MDS
 #' @examples
 #'
 #' \dontrun{
@@ -26,6 +28,7 @@
 #'
 #'
 #' @export
+
 compute_BIC_MDS <- function(x, ...) {
   UseMethod("compute_BIC_MDS",  x)
 }

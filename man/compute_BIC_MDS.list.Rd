@@ -24,12 +24,17 @@ a list of indidivdual normalized symmetric distance matrices
 
 \dontrun{
 
-compute_BIC_MDS(d,min_dim = 1, max_dim = 5)
+compute_BIC_MDS.list(d,min_dim = 1, max_dim = 5)
 
 }
 
-
+}
+\seealso{
+Other compute_BIC_MDS: 
+\code{\link{compute_BIC_MDS}()},
+\code{\link{compute_BIC_MDS.matrix}()}
 }
 \author{
 David Izydorczyk
 }
+\concept{compute_BIC_MDS}
