@@ -5,7 +5,7 @@
 #' @section Functions:
 #' - \code{\link{gen_lat_dim}}:
 #'
-#' @docType package
+#' @docType _PACKAGE
 #' @name MDShelper
 #' @useDynLib MDShelper
 NULL

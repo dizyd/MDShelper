@@ -7,27 +7,32 @@
 BIC_MDS(s, rss, n_dims, n_items)
 }
 \arguments{
-\item{s}{sample estimate of standard deviation}
+\item{s}{Assumed level of data precision. If individual level data is available,
+this can is calculated as the average of the standard errors for each of the
+pooled cells in the final matrix. If only aggregate level data is available, this value needs to be defined.
+Sensible values from previous studies for normalized similarity matrices showed s values between approximately 0.05 and 0.15,
+which could be interpreted as ‘precise’ and ‘imprecise’ data sets.}
 
-\item{rss}{residual sum-of-squares of current solution}
+\item{rss}{Residual sum-of-squares of current solution}
 
-\item{n_dims}{number of dimensions number}
+\item{n_dims}{Number of dimensions number}
 
-\item{n_items}{number of items}
+\item{n_items}{Number of items}
 }
 \value{
 BIC for a specific number of dimensions.
 }
 \description{
-\code{BIC_MDS} computes the BIC for a specific number of dimensions of the MDS space according to Lee (2001)
+\code{BIC_MDS} computes the BIC for a specific number of dimensions of the
+MDS space according to Lee (2001)
 }
 \examples{
 
-\dontrun{
 
-BIC_MDS()
 
-}
+BIC_MDS(s = 0.1, rss = 0.4, n_dims = 5, n_items = 16)
+
+
 
 
 }

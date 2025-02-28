@@ -1,6 +1,6 @@
 Package: MDShelper
 Title: MDS Helper Functions
-Version: 0.0-3
+Version: 0.0-4
 Authors@R: 
     person(given = "David", family = "Izydorczyk", , "izydorczyk@uni-mannheim.de", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0002-8792-0795"))
@@ -23,3 +23,7 @@ Imports:
     progress
 Depends: 
     R (>= 4.2)
+Suggests: 
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr

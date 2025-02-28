@@ -20,7 +20,7 @@
 #' @export
 fill_mat <- function(lower_mat,diag_val = 0){
 
-  diag(lower_mat) = diag_val
+  diag(lower_mat) <- diag_val
   lower_mat[upper.tri(lower_mat)] <- t(lower_mat)[upper.tri(lower_mat)]
 
   return(lower_mat)
