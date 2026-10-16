@@ -6,8 +6,7 @@ using namespace Rcpp;
 //'
 //' @param x numeric matrix with dimensions in the columns and stimuli in the rows
 //' @param r Minkowski metric (1 = city block, 2 = euclidean)
-//'
-
+//' @noRd
 // [[Rcpp::export]]
 NumericMatrix pair_dist_cpp(NumericMatrix x, double r) {
 
@@ -24,7 +23,7 @@ NumericMatrix pair_dist_cpp(NumericMatrix x, double r) {
 
       for(int k = 0; k < ndim; k++){
 
-       t_p += pow(x(i,k)-x(j,k),r);
+        t_p += pow(std::abs(x(i,k)-x(j,k)), r);
 
       }
 

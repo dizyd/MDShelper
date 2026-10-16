@@ -4,17 +4,21 @@
 \alias{compute_BIC_MDS.list}
 \title{Compute BIC for MDS according to Lee (2001)}
 \usage{
-\method{compute_BIC_MDS}{list}(x, min_dim = 1, max_dim = 5)
+\method{compute_BIC_MDS}{list}(x, min_dim = 1, max_dim = 5, s_type = c("se", "sd"))
 }
 \arguments{
+\item{x}{must a \emph{list} of individual symmetric normalized pair-wise distance matrices}
+
 \item{min_dim}{minimum number of dimensions to test (default = 1)}
 
 \item{max_dim}{maximum number of dimensions to test (default = 5)}
 
-\item{d}{must a \emph{list} of individual symmetric normalized pair-wise distance matrices}
+\item{s_type}{how the data precision s is computed from the individual data: \code{"se"} (default) uses the
+mean standard error of the pooled cells, i.e. the precision of the averaged matrix; \code{"sd"} uses the
+mean standard deviation of the pooled cells, as in Lee (2001, Eq. 6)}
 }
 \value{
-data.frame with the number of dimensions \code{dim}, the stress \code{Stress}, the BIC for a specific number of dimensions \code{BIC}, the residual sum-of-squares \code{RSS} of the used solution, the variance of the distance values accounted for by the solution \code{VAF},  the number of parameters \code{P} according to Lee (2001), and the used precision estiamte \code{s}
+data.frame with the number of dimensions \code{dim}, the stress \code{Stress}, the BIC for a specific number of dimensions \code{BIC}, the residual sum-of-squares \code{RSS} of the used solution (on the scale of the data), the variance of the distance values accounted for by the solution \code{VAF},  the number of parameters \code{P} according to Lee (2001), and the used precision estiamte \code{s}
 }
 \description{
 Computes the BIC for a specific number of dimensions of the MDS space according to Lee (2001) based on
@@ -30,9 +34,9 @@ compute_BIC_MDS.list(d,min_dim = 1, max_dim = 5)
 
 }
 \seealso{
-Other compute_BIC_MDS: 
-\code{\link{compute_BIC_MDS}()},
-\code{\link{compute_BIC_MDS.matrix}()}
+Other compute_BIC_MDS:
+\code{\link[=compute_BIC_MDS]{compute_BIC_MDS()}},
+\code{\link[=compute_BIC_MDS.matrix]{compute_BIC_MDS.matrix()}}
 }
 \author{
 David Izydorczyk

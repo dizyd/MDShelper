@@ -7,3 +7,6 @@
 
 dev_code.R
 inst/doc
+src/*.o
+src/*.so
+src/*.dll

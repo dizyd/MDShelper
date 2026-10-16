@@ -7,16 +7,17 @@
 \method{compute_BIC_MDS}{matrix}(x, min_dim = 1, max_dim = 5, s = 0.1)
 }
 \arguments{
+\item{x}{must a symmetric \emph{matrix} of averaged normalized distances}
+
 \item{min_dim}{minimum number of dimensions to test (default = 1)}
 
 \item{max_dim}{maximum number of dimensions to test (default = 5)}
 
-\item{s}{Assumed level of data precision. Has to be provided when d is an averaged matrix (default = 0.1). Otherwise s is computed from the individual level data.}
-
-\item{d}{must a symmetric \emph{matrix} of averaged normalized distances}
+\item{s}{Assumed level of data precision, on the same scale as x (default = 0.1). For an averaged matrix
+from K persons, use the mean between-person standard deviation divided by sqrt(K).}
 }
 \value{
-data.frame with the number of dimensions \code{dim}, the stress \code{Stress}, the BIC for a specific number of dimensions \code{BIC}, the residual sum-of-squares \code{RSS} of the used solution, the variance of the distance values accounted for by the solution \code{VAF},  the number of parameters \code{P} according to Lee (2001), and the used precision estiamte \code{s}
+data.frame with the number of dimensions \code{dim}, the stress \code{Stress}, the BIC for a specific number of dimensions \code{BIC}, the residual sum-of-squares \code{RSS} of the used solution (on the scale of the data), the variance of the distance values accounted for by the solution \code{VAF},  the number of parameters \code{P} according to Lee (2001), and the used precision estiamte \code{s}
 }
 \description{
 Computes the BIC for a specific number of dimensions of the MDS space according to Lee (2001) based on
@@ -32,9 +33,9 @@ compute_BIC_MDS.matrix(d,min_dim = 1, max_dim = 5, s = 0.1)
 
 }
 \seealso{
-Other compute_BIC_MDS: 
-\code{\link{compute_BIC_MDS}()},
-\code{\link{compute_BIC_MDS.list}()}
+Other compute_BIC_MDS:
+\code{\link[=compute_BIC_MDS]{compute_BIC_MDS()}},
+\code{\link[=compute_BIC_MDS.list]{compute_BIC_MDS.list()}}
 }
 \author{
 David Izydorczyk

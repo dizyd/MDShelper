@@ -7,13 +7,15 @@
 BIC_MDS(s, rss, n_dims, n_items)
 }
 \arguments{
-\item{s}{Assumed level of data precision. If individual level data is available,
-this can is calculated as the average of the standard errors for each of the
-pooled cells in the final matrix. If only aggregate level data is available, this value needs to be defined.
-Sensible values from previous studies for normalized similarity matrices showed s values between approximately 0.05 and 0.15,
-which could be interpreted as ‘precise’ and ‘imprecise’ data sets.}
+\item{s}{Assumed level of data precision, on the same scale as the data (e.g., normalized 0-1 data).
+If individual level data is available, \code{\link{compute_BIC_MDS}} estimates s either as the mean
+standard error of the pooled cells (default; the precision of the averaged matrix) or as Lee's (2001)
+mean standard deviation of the pooled cells. If only aggregate level data is available, this value needs
+to be defined. Typical between-person standard deviations for normalized similarity data are
+about 0.10 to 0.20 (Lee, 2001; Gronau & Lee, 2020); the corresponding standard error is SD / sqrt(K)
+for K persons.}
 
-\item{rss}{Residual sum-of-squares of current solution}
+\item{rss}{Residual sum-of-squares of current solution, on the same scale as the data}
 
 \item{n_dims}{Number of dimensions number}
 

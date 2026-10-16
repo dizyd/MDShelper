@@ -2,27 +2,24 @@
 #'
 #' \code{loo_CV_MDS} runs a leave-one-out (loo) cross-validation procedure to find the best fitting number of dimensions of the MDS space
 #'
-#' @param mat     pairwise distance matrix
+#' @param mat     pairwise distance matrix (e.g., normalized to 0-1)
 #' @param max_dim maximum number of dimensions to test (default = 2)
 #' @param verbose prints progress (default = FALSE)
-#' @param parallel run the main computation in parallel
-#' @param n_cores  if parallel == TRUE, how many cores should be used when registering the cluster
+#' @param parallel run the main computation in parallel (default = FALSE)
+#' @param n_cores  if parallel == TRUE, how many cores should be used when starting the cluster
 #'
 #' @importFrom stats  dist
 #' @importFrom stats  cor
 #' @importFrom smacof mds
-#' @importFrom purrr  map2_dbl
-#' @importFrom purrr  map2
 #' @importFrom magrittr %>%
-#' @importFrom rlang .data
 #' @importFrom parallel makeCluster
 #' @importFrom parallel stopCluster
-#' @importFrom doParallel registerDoParallel
+#' @importFrom parallel parLapply
 #' @importFrom progress  progress_bar
 #'
 #' @author David Izydorczyk
 #'
-#' @return Matrix with number of dimensions `dim` and R-squared, RMSE and MSE between the true and predicted distances in each leave-one-out trial
+#' @return Matrix with number of dimensions `dim` and R-squared, RMSE and MSE between the true and predicted distances in each leave-one-out trial. Predicted distances are on the scale of the input data.
 #' @examples
 #'
 #' \dontrun{
@@ -33,7 +30,7 @@
 #'
 #'
 #' @export
-loo_CV_MDS <- function(mat, max_dim = 2, verbose = FALSE, parallel = TRUE, n_cores = 4){
+loo_CV_MDS <- function(mat, max_dim = 2, verbose = FALSE, parallel = FALSE, n_cores = 4){
 
   dims_to_test <- 1:max_dim                  # define vector with dimensions to test
   res_MSE      <- vector("numeric",max_dim)  # create empty results vector
@@ -73,10 +70,10 @@ loo_CV_MDS <- function(mat, max_dim = 2, verbose = FALSE, parallel = TRUE, n_cor
   TRUE_vals <-  mat[lower.tri(mat)] %>% as.vector()
 
 
-  # if parallel == TRUE register a parallel backend with n_cores
+  # if parallel == TRUE start a cluster with n_cores
   if(parallel){
     cl <- makeCluster(n_cores)
-    registerDoParallel(cl)
+    on.exit(stopCluster(cl))
   }
 
 
@@ -88,20 +85,27 @@ loo_CV_MDS <- function(mat, max_dim = 2, verbose = FALSE, parallel = TRUE, n_cor
   }
 
 
+  # Calculate MDS solution and return the distances, rescaled to the scale
+  # of the data (smacof normalizes the data internally)
+  fit_solution <- function(x, dim){
+
+    fit <- mds(x, ndim = dim, type = "ordinal")
+    sc  <- rss_data_scale(x, fit$conf)
+
+    sc$b * sc$conf_d
+
+  }
+
+
   for(dim in dims_to_test){
 
 
     # Calculate MDS solution
-    MDS_solutions <- lapply(NA_mats,function(x,...){
-
-
-      mds(x,ndim=dim,"ordinal") %>%
-        .$conf %>%
-        stats::dist(., method = "euclidean") %>%
-        as.matrix()
-
-
-    },dim,.parallel = parallel)
+    if(parallel){
+      MDS_solutions <- parLapply(cl, NA_mats, fit_solution, dim = dim)
+    } else {
+      MDS_solutions <- lapply(NA_mats, fit_solution, dim = dim)
+    }
 
 
     # Extract predictions for missing distances based on MDS solution
@@ -131,14 +135,13 @@ loo_CV_MDS <- function(mat, max_dim = 2, verbose = FALSE, parallel = TRUE, n_cor
 
   }
 
-  # stop cluste gain
-  if(parallel){
-    stopCluster(cl)
-  }
-
   # Combine indices and return results
   return(cbind("dim"  = dims_to_test,
                "R_sq" = res_rsq,
                "RMSE" = res_RMSE,
                "MSE"  = res_MSE))
 }
+
+
+
+

@@ -34,9 +34,9 @@ compute_BIC_MDS(d,min_dim = 1, max_dim = 5)
 
 }
 \seealso{
-Other compute_BIC_MDS: 
-\code{\link{compute_BIC_MDS.list}()},
-\code{\link{compute_BIC_MDS.matrix}()}
+Other compute_BIC_MDS:
+\code{\link[=compute_BIC_MDS.list]{compute_BIC_MDS.list()}},
+\code{\link[=compute_BIC_MDS.matrix]{compute_BIC_MDS.matrix()}}
 }
 \author{
 David Izydorczyk

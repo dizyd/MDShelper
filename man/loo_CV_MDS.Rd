@@ -4,21 +4,21 @@
 \alias{loo_CV_MDS}
 \title{Leave-One-Out Cross-Validation for MDS}
 \usage{
-loo_CV_MDS(mat, max_dim = 2, verbose = FALSE, parallel = TRUE, n_cores = 4)
+loo_CV_MDS(mat, max_dim = 2, verbose = FALSE, parallel = FALSE, n_cores = 4)
 }
 \arguments{
-\item{mat}{pairwise distance matrix}
+\item{mat}{pairwise distance matrix (e.g., normalized to 0-1)}
 
 \item{max_dim}{maximum number of dimensions to test (default = 2)}
 
 \item{verbose}{prints progress (default = FALSE)}
 
-\item{parallel}{run the main computation in parallel}
+\item{parallel}{run the main computation in parallel (default = FALSE)}
 
-\item{n_cores}{if parallel == TRUE, how many cores should be used when registering the cluster}
+\item{n_cores}{if parallel == TRUE, how many cores should be used when starting the cluster}
 }
 \value{
-Matrix with number of dimensions \code{dim} and R-squared, RMSE and MSE between the true and predicted distances in each leave-one-out trial
+Matrix with number of dimensions \code{dim} and R-squared, RMSE and MSE between the true and predicted distances in each leave-one-out trial. Predicted distances are on the scale of the input data.
 }
 \description{
 \code{loo_CV_MDS} runs a leave-one-out (loo) cross-validation procedure to find the best fitting number of dimensions of the MDS space

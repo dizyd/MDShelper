@@ -5,9 +5,7 @@
 #'
 #' @param x numeric matrix with dimensions in the columns and stimuli in the rows
 #' @param r Minkowski metric (1 = city block, 2 = euclidean)
-#'
-NULL
-
+#' @noRd
 pair_dist_cpp <- function(x, r) {
     .Call('_MDShelper_pair_dist_cpp', PACKAGE = 'MDShelper', x, r)
 }
