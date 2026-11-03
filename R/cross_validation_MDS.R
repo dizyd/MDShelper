@@ -10,6 +10,9 @@
 #' @param metric  CV-metric to use. Either r (correlation) or RMSE (root-mean-squared-error)
 #' @param parallel run the main computation in parallel
 #' @param n_cores  if parallel == TRUE, how many cores should be used when registering the cluster
+#' @param eps     convergence criterion passed to \code{smacof::mds} (default = 1e-8; smacof's default
+#'                of 1e-6 stops too early in high dimensions when a cell is missing, see NEWS)
+#' @param itmax   maximum number of iterations passed to \code{smacof::mds} (default = 1e5)
 #'
 #' @importFrom stats  dist
 #' @importFrom stats  cor
@@ -36,7 +39,8 @@
 #'
 #' @export
 cross_validation_MDS <- function(mat, reps=100, max_dim=2, NA_prob=0.2, verbose = FALSE,
-                                 metric = "r", parallel = TRUE, n_cores = 4){
+                                 metric = "r", parallel = TRUE, n_cores = 4,
+                                 eps = 1e-8, itmax = 1e5){
 
   dims_to_test <- 1:max_dim                  # define vector with dimensions to test
   res_m        <- vector("numeric",max_dim)  # create empty results vector
@@ -115,7 +119,7 @@ cross_validation_MDS <- function(mat, reps=100, max_dim=2, NA_prob=0.2, verbose 
     MDS_solutions <- lapply(NA_mats,function(x,...){
 
 
-      mds(x,ndim=dim,"ordinal") %>%
+      mds(x,ndim=dim,"ordinal", eps = eps, itmax = itmax) %>%
         .$conf %>%
         stats::dist(., method = "euclidean") %>%
         as.matrix()

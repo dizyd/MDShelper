@@ -7,6 +7,9 @@
 #' @param verbose prints progress (default = FALSE)
 #' @param parallel run the main computation in parallel (default = FALSE)
 #' @param n_cores  if parallel == TRUE, how many cores should be used when starting the cluster
+#' @param eps     convergence criterion passed to \code{smacof::mds} (default = 1e-8; smacof's default
+#'                of 1e-6 stops too early in high dimensions when a cell is missing, see NEWS)
+#' @param itmax   maximum number of iterations passed to \code{smacof::mds} (default = 1e5)
 #'
 #' @importFrom stats  dist
 #' @importFrom stats  cor
@@ -30,7 +33,8 @@
 #'
 #'
 #' @export
-loo_CV_MDS <- function(mat, max_dim = 2, verbose = FALSE, parallel = FALSE, n_cores = 4){
+loo_CV_MDS <- function(mat, max_dim = 2, verbose = FALSE, parallel = FALSE, n_cores = 4,
+                       eps = 1e-8, itmax = 1e5){
 
   dims_to_test <- 1:max_dim                  # define vector with dimensions to test
   res_MSE      <- vector("numeric",max_dim)  # create empty results vector
@@ -87,9 +91,9 @@ loo_CV_MDS <- function(mat, max_dim = 2, verbose = FALSE, parallel = FALSE, n_co
 
   # Calculate MDS solution and return the distances, rescaled to the scale
   # of the data (smacof normalizes the data internally)
-  fit_solution <- function(x, dim){
+  fit_solution <- function(x, dim, eps, itmax){
 
-    fit <- mds(x, ndim = dim, type = "ordinal")
+    fit <- mds(x, ndim = dim, type = "ordinal", eps = eps, itmax = itmax)
     sc  <- rss_data_scale(x, fit$conf)
 
     sc$b * sc$conf_d
@@ -102,9 +106,9 @@ loo_CV_MDS <- function(mat, max_dim = 2, verbose = FALSE, parallel = FALSE, n_co
 
     # Calculate MDS solution
     if(parallel){
-      MDS_solutions <- parLapply(cl, NA_mats, fit_solution, dim = dim)
+      MDS_solutions <- parLapply(cl, NA_mats, fit_solution, dim = dim, eps = eps, itmax = itmax)
     } else {
-      MDS_solutions <- lapply(NA_mats, fit_solution, dim = dim)
+      MDS_solutions <- lapply(NA_mats, fit_solution, dim = dim, eps = eps, itmax = itmax)
     }
 
 

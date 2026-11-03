@@ -4,7 +4,15 @@
 \alias{loo_CV_MDS}
 \title{Leave-One-Out Cross-Validation for MDS}
 \usage{
-loo_CV_MDS(mat, max_dim = 2, verbose = FALSE, parallel = FALSE, n_cores = 4)
+loo_CV_MDS(
+  mat,
+  max_dim = 2,
+  verbose = FALSE,
+  parallel = FALSE,
+  n_cores = 4,
+  eps = 1e-08,
+  itmax = 1e+05
+)
 }
 \arguments{
 \item{mat}{pairwise distance matrix (e.g., normalized to 0-1)}
@@ -16,6 +24,11 @@ loo_CV_MDS(mat, max_dim = 2, verbose = FALSE, parallel = FALSE, n_cores = 4)
 \item{parallel}{run the main computation in parallel (default = FALSE)}
 
 \item{n_cores}{if parallel == TRUE, how many cores should be used when starting the cluster}
+
+\item{eps}{convergence criterion passed to \code{smacof::mds} (default = 1e-8; smacof's default
+of 1e-6 stops too early in high dimensions when a cell is missing, see NEWS)}
+
+\item{itmax}{maximum number of iterations passed to \code{smacof::mds} (default = 1e5)}
 }
 \value{
 Matrix with number of dimensions \code{dim} and R-squared, RMSE and MSE between the true and predicted distances in each leave-one-out trial. Predicted distances are on the scale of the input data.

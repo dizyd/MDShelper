@@ -16,6 +16,9 @@
 #' @param max_row_missing maximum proportion of a stimulus' pairs that may be held out;
 #'                  splits that hold out more are redrawn (default = 0.75)
 #' @param type      MDS type passed to \code{smacof::mds} (default = "ratio")
+#' @param eps     convergence criterion passed to \code{smacof::mds} (default = 1e-8; smacof's default
+#'                of 1e-6 stops too early in high dimensions when a cell is missing, see NEWS)
+#' @param itmax   maximum number of iterations passed to \code{smacof::mds} (default = 1e5)
 #' @param verbose   prints progress (default = FALSE)
 #'
 #' @importFrom stats  dist
@@ -42,7 +45,8 @@
 #'
 #' @export
 holdout_CV_MDS <- function(mat, weightmat = NULL, max_dim = 2, reps = 10, test_prop = 0.2,
-                           max_row_missing = 0.75, type = "ratio", verbose = FALSE){
+                           max_row_missing = 0.75, type = "ratio", verbose = FALSE,
+                           eps = 1e-8, itmax = 1e5){
 
   dims_to_test <- 1:max_dim                  # define vector with dimensions to test
   n            <- nrow(mat)                  # number of stimuli
@@ -92,7 +96,7 @@ holdout_CV_MDS <- function(mat, weightmat = NULL, max_dim = 2, reps = 10, test_p
 
     for(dim in dims_to_test){
 
-      fit       <- mds(train, ndim = dim, type = type, weightmat = train_w)
+      fit       <- mds(train, ndim = dim, type = type, weightmat = train_w, eps = eps, itmax = itmax)
       PRED_vals <- as.matrix(dist(fit$conf))[test_pos]
 
       res_md[r, dim] <- cor(TRUE_vals, PRED_vals)

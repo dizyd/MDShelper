@@ -4,7 +4,14 @@
 \alias{compute_BIC_MDS.list}
 \title{Compute BIC for MDS according to Lee (2001)}
 \usage{
-\method{compute_BIC_MDS}{list}(x, min_dim = 1, max_dim = 5, s_type = c("se", "sd"))
+\method{compute_BIC_MDS}{list}(
+  x,
+  min_dim = 1,
+  max_dim = 5,
+  s_type = c("se", "sd"),
+  eps = 1e-08,
+  itmax = 1e+05
+)
 }
 \arguments{
 \item{x}{must a \emph{list} of individual symmetric normalized pair-wise distance matrices}
@@ -16,6 +23,11 @@
 \item{s_type}{how the data precision s is computed from the individual data: \code{"se"} (default) uses the
 mean standard error of the pooled cells, i.e. the precision of the averaged matrix; \code{"sd"} uses the
 mean standard deviation of the pooled cells, as in Lee (2001, Eq. 6)}
+
+\item{eps}{convergence criterion passed to \code{smacof::mds} (default = 1e-8; smacof's default
+of 1e-6 stops too early in high dimensions when a cell is missing, see NEWS)}
+
+\item{itmax}{maximum number of iterations passed to \code{smacof::mds} (default = 1e5)}
 }
 \value{
 data.frame with the number of dimensions \code{dim}, the stress \code{Stress}, the BIC for a specific number of dimensions \code{BIC}, the residual sum-of-squares \code{RSS} of the used solution (on the scale of the data), the variance of the distance values accounted for by the solution \code{VAF},  the number of parameters \code{P} according to Lee (2001), and the used precision estiamte \code{s}

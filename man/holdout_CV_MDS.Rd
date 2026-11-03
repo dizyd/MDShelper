@@ -12,7 +12,9 @@ holdout_CV_MDS(
   test_prop = 0.2,
   max_row_missing = 0.75,
   type = "ratio",
-  verbose = FALSE
+  verbose = FALSE,
+  eps = 1e-08,
+  itmax = 1e+05
 )
 }
 \arguments{
@@ -33,6 +35,11 @@ splits that hold out more are redrawn (default = 0.75)}
 \item{type}{MDS type passed to \code{smacof::mds} (default = "ratio")}
 
 \item{verbose}{prints progress (default = FALSE)}
+
+\item{eps}{convergence criterion passed to \code{smacof::mds} (default = 1e-8; smacof's default
+of 1e-6 stops too early in high dimensions when a cell is missing, see NEWS)}
+
+\item{itmax}{maximum number of iterations passed to \code{smacof::mds} (default = 1e5)}
 }
 \value{
 Matrix with number of dimensions \code{dim}, the median (\code{Md_r}) and mean (\code{M_r})

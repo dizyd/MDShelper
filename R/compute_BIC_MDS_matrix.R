@@ -8,6 +8,9 @@
 #' @param max_dim maximum number of dimensions to test (default = 5)
 #' @param s Assumed level of data precision, on the same scale as x (default = 0.1). For an averaged matrix
 #'  from K persons, use the mean between-person standard deviation divided by sqrt(K).
+#' @param eps     convergence criterion passed to \code{smacof::mds} (default = 1e-8; smacof's default
+#'                of 1e-6 stops too early in high dimensions when a cell is missing, see NEWS)
+#' @param itmax   maximum number of iterations passed to \code{smacof::mds} (default = 1e5)
 #'
 #' @importFrom stats na.omit
 #' @importFrom stats sd
@@ -28,7 +31,7 @@
 #'
 #' @method compute_BIC_MDS matrix
 #' @export
-compute_BIC_MDS.matrix <- function(x, min_dim = 1, max_dim = 5, s = 0.1){
+compute_BIC_MDS.matrix <- function(x, min_dim = 1, max_dim = 5, s = 0.1, eps = 1e-8, itmax = 1e5){
 
 
   if (!is.matrix(x) || nrow(x) != ncol(x)) {
@@ -70,7 +73,7 @@ compute_BIC_MDS.matrix <- function(x, min_dim = 1, max_dim = 5, s = 0.1){
   for(i in seq_along(dims)){
 
     # Determine solution
-    fit <- mds(d_mat, ndim = dims[i], type = "ordinal")
+    fit <- mds(d_mat, ndim = dims[i], type = "ordinal", eps = eps, itmax = itmax)
 
     # get stress
     res$Stress[i] <- fit$stress

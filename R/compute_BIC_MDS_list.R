@@ -9,6 +9,9 @@
 #' @param s_type how the data precision s is computed from the individual data: `"se"` (default) uses the
 #'  mean standard error of the pooled cells, i.e. the precision of the averaged matrix; `"sd"` uses the
 #'  mean standard deviation of the pooled cells, as in Lee (2001, Eq. 6)
+#' @param eps     convergence criterion passed to \code{smacof::mds} (default = 1e-8; smacof's default
+#'                of 1e-6 stops too early in high dimensions when a cell is missing, see NEWS)
+#' @param itmax   maximum number of iterations passed to \code{smacof::mds} (default = 1e5)
 #'
 #' @importFrom stats na.omit
 #' @importFrom stats sd
@@ -30,7 +33,8 @@
 #' @method compute_BIC_MDS list
 #' @export
 #'
-compute_BIC_MDS.list <- function(x, min_dim = 1, max_dim = 5, s_type = c("se", "sd")){
+compute_BIC_MDS.list <- function(x, min_dim = 1, max_dim = 5, s_type = c("se", "sd"),
+                                 eps = 1e-8, itmax = 1e5){
 
   s_type <- match.arg(s_type)
 
@@ -72,7 +76,8 @@ compute_BIC_MDS.list <- function(x, min_dim = 1, max_dim = 5, s_type = c("se", "
 
 
   # Compute BIC on the aggregate matrix with the estimated s
-  res <- compute_BIC_MDS.matrix(d_mat, min_dim = min_dim, max_dim = max_dim, s = s)
+  res <-  compute_BIC_MDS.matrix(d_mat, min_dim = min_dim, max_dim = max_dim, s = s,
+                                 eps = eps, itmax = itmax)
 
 
   return(res)
